@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: headerFragment">
+</head>
+<body>
+	<div class="container">
+		<div class="jumbotron text-center">
+			<h1>Local Host 8084</h1>
+		</div>
+		<div>
+			<p>
+				Однажды, в студеную зимнюю пору<br>
+				Я из лесу вышел; был сильный мороз.<br>
+				Гляжу, поднимается медленно в гору<br>
+				Лошадка, везущая хворосту воз.<br>
+				И шествуя важно, в спокойствии чинном,<br>
+				Лошадку ведет под уздцы мужичок ...<br>
+			</p>
+
+			<h2>Модуль №8084</h2>
+			<div class="well">
+				<b>Пройдите по ссылке: </b><a href="http://localhost:8080/customers1">module №1 (порт 8080)</a>
+			</div>
+			<div class="well">
+				<b>Пройдите по ссылке: </b><a href="http://localhost:8084/customers2">module №2 (порт 8084)</a>
+			</div>
+			<div class="well">
+				<b>Выход: </b><a href="/logout">LOGOUT</a>
+			</div>
+		</div>
+		<div id="pagefoot" th:include="layout :: footerFragment">Footer
+		</div>
+	</div>
+	<!-- container -->
+
+</body>
+</html>

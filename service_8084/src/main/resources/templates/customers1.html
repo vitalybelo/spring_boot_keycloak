@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: headerFragment">
+</head>
+<body>
+	<div id="container">
+		<h1>
+			<div>СТРАНИЦА ОДИН (8084)</div>
+		</h1>
+
+		<h2>
+			Hello, <span th:text="${username}">--name--</span>
+		</h2>
+
+		<br>
+		<div><a href="/logout">LOGOUT</a></div>
+		<div><a href="/">HOME PAGE</a></div>
+	</div>
+	<!-- container -->
+</body>
+</html>
