@@ -17,12 +17,12 @@ import javax.servlet.http.HttpServletResponse;
  * Класс KeycloakLogoutHandler реализует класс LogoutHandler и отправляет запрос на выход в Keycloak.
  */
 @Component
-public class KeycloakLogoutHandler8080 implements LogoutHandler {
+public class KeycloakLogoutHandler implements LogoutHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(KeycloakLogoutHandler8080.class);
+    private static final Logger logger = LoggerFactory.getLogger(KeycloakLogoutHandler.class);
     private final RestTemplate restTemplate;
 
-    public KeycloakLogoutHandler8080(RestTemplate restTemplate) {
+    public KeycloakLogoutHandler(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

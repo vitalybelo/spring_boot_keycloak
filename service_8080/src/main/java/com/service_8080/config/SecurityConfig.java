@@ -20,11 +20,11 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
  */
 
 @KeycloakConfiguration
-class SecurityConfig8080 {
+class SecurityConfig {
 
-    private final KeycloakLogoutHandler8080 keycloakLogoutHandler;
+    private final KeycloakLogoutHandler keycloakLogoutHandler;
 
-    SecurityConfig8080(KeycloakLogoutHandler8080 keycloakLogoutHandler) {
+    SecurityConfig(KeycloakLogoutHandler keycloakLogoutHandler) {
         this.keycloakLogoutHandler = keycloakLogoutHandler;
     }
 
@@ -38,9 +38,6 @@ class SecurityConfig8080 {
         http
                 .authorizeRequests()
                 .antMatchers("/*").authenticated()
-//                .antMatchers("/customers1*").hasRole("USER")
-//                .antMatchers("/customers2*").hasRole("USER")
-//                .antMatchers("/customers3*").hasRole("USER")
                 .anyRequest().permitAll();
         http.oauth2Login()
                 .and()

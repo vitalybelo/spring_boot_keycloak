@@ -14,7 +14,10 @@ public class Controller8080 {
     private HttpServletRequest request;
 
     @GetMapping(path = "/")
-    public String index() {
+    public String index(Principal principal, Model model) {
+        KeycloakRolesParser roles = new KeycloakRolesParser(principal);
+        model.addAttribute("username", principal.getName());
+        model.addAttribute("roles", roles.getRoles());
         return "external";
     }
 
