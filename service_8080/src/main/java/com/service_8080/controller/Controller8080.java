@@ -30,9 +30,9 @@ public class Controller8080 {
     @GetMapping(path = "/customers1")
     public String linkPage1(Principal principal, Model model)
     {
+        System.out.println(principal);
         KeycloakRolesParser roles = new KeycloakRolesParser(principal);
         if (roles.getRoles().contains("USER")) {
-            System.out.println(principal);
             model.addAttribute("username", principal.getName());
             return "customers1";
         }
@@ -42,9 +42,9 @@ public class Controller8080 {
     @GetMapping(path = "/customers2")
     public String linkPage2(Principal principal, Model model)
     {
+        System.out.println(principal.toString());
         KeycloakRolesParser roles = new KeycloakRolesParser(principal);
         if (roles.getRoles().contains("ADMIN")) {
-            System.out.println(principal.toString());
             model.addAttribute("username", principal.getName());
             return "customers2";
         }
@@ -54,9 +54,9 @@ public class Controller8080 {
     @GetMapping(path = "/customers3")
     public String linkPage3(Principal principal, Model model)
     {
+        System.out.println(principal.toString());
         KeycloakRolesParser roles = new KeycloakRolesParser(principal);
         if (roles.getRoles().contains("BOSS")) {
-            System.out.println(principal.toString());
             model.addAttribute("username", principal.getName());
             return "customers3";
         }

@@ -12,19 +12,18 @@ import org.springframework.security.web.authentication.session.RegisterSessionAu
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
 /**
+ * Конфигурация автоподключения ресурс сервера oauth2 к серверу keycloak (параметры в application.yml)
  * метод oauth2Login() добавляет OAuth2LoginAuthenticationFilter в цепочку фильтров. Этот фильтр перехватывает
  * запросы и применяет необходимую логику для аутентификации OAuth 2. Метод oauth2ResourceServer проверит связанный
- * токен JWT с нашим сервером Keycloak. Мы настраиваем доступ на основе полномочий и ролей в методе configure().
- * Эти ограничения гарантируют, что каждый запрос к /customers/* будет авторизован только в том случае, если
- * запрашивающий его является аутентифицированным пользователем с ролью USER.
+ * токен JWT с нашим сервером Keycloak. Мы настраиваем доступ на основе полномочий и ролей в методе filterChain().
  */
 
 @KeycloakConfiguration
-class SecurityConfig8084 {
+class SecurityConfig {
 
-    private final KeycloakLogoutHandler8084 keycloakLogoutHandler;
+    private final KeycloakLogoutHandler keycloakLogoutHandler;
 
-    SecurityConfig8084(KeycloakLogoutHandler8084 keycloakLogoutHandler) {
+    SecurityConfig(KeycloakLogoutHandler keycloakLogoutHandler) {
         this.keycloakLogoutHandler = keycloakLogoutHandler;
     }
 
@@ -34,13 +33,10 @@ class SecurityConfig8084 {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
+    {
+        http.authorizeRequests()
                 .antMatchers("/*").authenticated()
-//                .antMatchers("/customers1*").hasRole("USER")
-//                .antMatchers("/customers2*").hasRole("USER")
-//                .antMatchers("/customers3*").hasRole("USER")
                 .anyRequest().permitAll();
         http.oauth2Login()
                 .and()

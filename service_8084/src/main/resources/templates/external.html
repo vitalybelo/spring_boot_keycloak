@@ -8,28 +8,36 @@
 			<h1>Local Host 8084</h1>
 		</div>
 		<div>
-			<p>
-				Однажды, в студеную зимнюю пору<br>
-				Я из лесу вышел; был сильный мороз.<br>
-				Гляжу, поднимается медленно в гору<br>
-				Лошадка, везущая хворосту воз.<br>
-				И шествуя важно, в спокойствии чинном,<br>
-				Лошадку ведет под уздцы мужичок ...<br>
-			</p>
+			<h2>Hello, <span th:text="${username}">--name--</span></h2>
 
-			<h2>Модуль №8084</h2>
+			<h4>Granted Authorities:
+				<tbody>
+				<tr th:each="role : ${roles}">
+					<td th:text="${role}">Text ...</td>
+				</tr>
+				</tbody>
+			</h4>
+
+			<h3>Доступные ссылки</h3>
+
 			<div class="well">
-				<b>Пройдите по ссылке: </b><a href="http://localhost:8080/customers1">module №1 (порт 8080)</a>
+				<b>Пройдите по ссылке: </b><a href="http://localhost:8084/customers1">доступ с любой ролью</a>
 			</div>
 			<div class="well">
-				<b>Пройдите по ссылке: </b><a href="http://localhost:8084/customers2">module №2 (порт 8084)</a>
+				<b>Пройдите по ссылке: </b><a href="http://localhost:8084/customers2">доступ с ролью GRANT</a>
+			</div>
+			<div class="well">
+				<b>Пройдите по ссылке: </b><a href="http://localhost:8084/customers3">доступ с ролью DELETE</a>
+			</div>
+			<div class="well">
+				<b>Пройдите по ссылке: </b><a href="http://localhost:8080/">module №2 (порт 8080)</a>
 			</div>
 			<div class="well">
 				<b>Выход: </b><a href="/logout">LOGOUT</a>
 			</div>
+
 		</div>
-		<div id="pagefoot" th:include="layout :: footerFragment">Footer
-		</div>
+		<div id="pagefoot" th:include="layout :: footerFragment">Footer</div>
 	</div>
 	<!-- container -->
 

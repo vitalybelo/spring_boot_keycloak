@@ -1,0 +1,26 @@
+server:
+  port: 8084
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: login-app
+            authorization-grant-type: authorization_code
+            scope:
+              - openid
+              - roles
+
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8180/realms/SpringBootKeycloak
+            user-name-attribute: preferred_username
+
+      resource-server:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/SpringBootKeycloak
+          jwk-set-uri: http://localhost:8180/realms/SpringBootKeycloak/protocol/openid-connect/certs
+
+

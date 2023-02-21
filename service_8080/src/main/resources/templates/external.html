@@ -8,17 +8,17 @@
 			<h1>Local Host 8080</h1>
 		</div>
 		<div>
-			<br>
 			<h2>Hello, <span th:text="${username}">--name--</span></h2>
-			<br>
 
-			<tbody>
-			<tr th:each="customer : ${roles}">
-				<td th:text="${customer}">Text ...</td>
-			</tr>
-			</tbody>
+			<h4>Granted Authorities:
+				<tbody>
+				<tr th:each="role : ${roles}">
+					<td th:text="${role}">Text ...</td>
+				</tr>
+				</tbody>
+			</h4>
 
-			<h2>Доступные ссылки</h2>
+			<h3>Доступные ссылки</h3>
 
 			<div class="well">
 				<b>Пройдите по ссылке: </b><a href="http://localhost:8080/customers1">доступ с ролью USER</a>
@@ -30,7 +30,7 @@
 				<b>Пройдите по ссылке: </b><a href="http://localhost:8080/customers3">доступ с ролью BOSS</a>
 			</div>
 			<div class="well">
-				<b>Пройдите по ссылке: </b><a href="http://localhost:8084/external">module №2 (порт 8084)</a>
+				<b>Пройдите по ссылке: </b><a href="http://localhost:8084/">module №2 (порт 8084)</a>
 			</div>
 			<div class="well">
 				<b>Выход: </b><a href="/logout">LOGOUT</a>

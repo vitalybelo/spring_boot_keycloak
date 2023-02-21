@@ -15,14 +15,15 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Класс KeycloakLogoutHandler реализует класс LogoutHandler и отправляет запрос на выход в Keycloak.
+ * После выполнения выхода из keycloak, появляется страница авторизации (или странице редиректа из настроек сервера)
  */
 @Component
-public class KeycloakLogoutHandler8084 implements LogoutHandler {
+public class KeycloakLogoutHandler implements LogoutHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(KeycloakLogoutHandler8084.class);
+    private static final Logger logger = LoggerFactory.getLogger(KeycloakLogoutHandler.class);
     private final RestTemplate restTemplate;
 
-    public KeycloakLogoutHandler8084(RestTemplate restTemplate) {
+    public KeycloakLogoutHandler(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

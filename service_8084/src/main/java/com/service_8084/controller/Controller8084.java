@@ -1,5 +1,6 @@
 package com.service_8084.controller;
 
+import com.service_8084.config.KeycloakRolesParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +15,10 @@ public class Controller8084 {
     private HttpServletRequest request;
 
     @GetMapping(path = "/")
-    public String index() {
+    public String index(Principal principal, Model model) {
+        KeycloakRolesParser roles = new KeycloakRolesParser(principal);
+        model.addAttribute("username", principal.getName());
+        model.addAttribute("roles", roles.getRoles());
         return "external";
     }
 
@@ -36,8 +40,24 @@ public class Controller8084 {
     public String linkPage2(Principal principal, Model model)
     {
         System.out.println(principal.toString());
-        model.addAttribute("username", principal.getName());
-        return "customers2";
+        KeycloakRolesParser roles = new KeycloakRolesParser(principal);
+        if (roles.getRoles().contains("GRANT")) {
+            model.addAttribute("username", principal.getName());
+            return "customers2";
+        }
+        return "denied";
+    }
+
+    @GetMapping(path = "/customers3")
+    public String linkPage3(Principal principal, Model model)
+    {
+        System.out.println(principal.toString());
+        KeycloakRolesParser roles = new KeycloakRolesParser(principal);
+        if (roles.getRoles().contains("DELETE")) {
+            model.addAttribute("username", principal.getName());
+            return "customers3";
+        }
+        return "denied";
     }
 
 }
