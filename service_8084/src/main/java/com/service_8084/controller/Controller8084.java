@@ -1,6 +1,6 @@
 package com.service_8084.controller;
 
-import com.service_8084.config.KeycloakRolesParser;
+import com.service_8084.config.KeycloakTokenParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +16,9 @@ public class Controller8084 {
 
     @GetMapping(path = "/")
     public String index(Principal principal, Model model) {
-        KeycloakRolesParser roles = new KeycloakRolesParser(principal);
+        KeycloakTokenParser roles = new KeycloakTokenParser(principal);
         model.addAttribute("username", principal.getName());
-        model.addAttribute("roles", roles.getRoles());
+        model.addAttribute("roles", roles.getRolesArray());
         return "external";
     }
 
@@ -40,8 +40,8 @@ public class Controller8084 {
     public String linkPage2(Principal principal, Model model)
     {
         System.out.println(principal.toString());
-        KeycloakRolesParser roles = new KeycloakRolesParser(principal);
-        if (roles.getRoles().contains("GRANT")) {
+        KeycloakTokenParser roles = new KeycloakTokenParser(principal);
+        if (roles.getRolesList().contains("GRANT")) {
             model.addAttribute("username", principal.getName());
             return "customers2";
         }
@@ -52,8 +52,8 @@ public class Controller8084 {
     public String linkPage3(Principal principal, Model model)
     {
         System.out.println(principal.toString());
-        KeycloakRolesParser roles = new KeycloakRolesParser(principal);
-        if (roles.getRoles().contains("DELETE")) {
+        KeycloakTokenParser roles = new KeycloakTokenParser(principal);
+        if (roles.getRolesList().contains("DELETE")) {
             model.addAttribute("username", principal.getName());
             return "customers3";
         }

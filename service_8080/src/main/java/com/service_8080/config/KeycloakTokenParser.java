@@ -1,7 +1,6 @@
-package com.service_8084.config;
+package com.service_8080.config;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,15 +11,25 @@ import java.util.List;
  * Здесь же: вкладка Scope -> добавляем в него все роли которые вы будете учитывать при работе
  * (если ничего не выбрано, по умолчанию будут переданы все роли включая default и так далее - много лишнего)
  */
-public class KeycloakRolesParser {
+public class KeycloakTokenParser {
 
     private final String principal;
+    private String[] rolesArray = new String[0];
 
-    public KeycloakRolesParser(Principal principal) {
+    public KeycloakTokenParser(Principal principal) {
         this.principal = principal.toString();
+        tokenRolesParser();
     }
 
-    public List<String> getRoles()
+    public String[] getRolesArray() {
+        return rolesArray;
+    }
+
+    public List<String> getRolesList() {
+        return List.of(rolesArray);
+    }
+
+    public void tokenRolesParser()
     {
         int i_end;
         String roles = "roles";
@@ -35,17 +44,16 @@ public class KeycloakRolesParser {
                 i_beg = principal.indexOf('[', i_beg);
                 if (i_beg > 0) {
                     i_end = principal.indexOf(']', i_beg);
-                    if (i_end > 0) {
-                        String str = principal
+                    if (i_end > 0 && i_beg + 1 < i_end && i_end < principal.length()) {
+                        rolesArray = principal
                                 .substring(i_beg + 1, i_end)
                                 .toUpperCase()
-                                .replace("\"", "");
-                        return List.of(str.split(","));
+                                .replace("\"", "")
+                                .split(",");
                     }
                 }
             }
         }
-        return new ArrayList<>();
     }
 
 }
