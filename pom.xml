@@ -13,11 +13,13 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <keycloak.version>19.0.3</keycloak.version>
     </properties>
 
     <modules>
         <module>service_8080</module>
         <module>service_8084</module>
+        <module>custom_event_listener</module>
     </modules>
 
 </project>

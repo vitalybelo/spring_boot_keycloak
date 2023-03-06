@@ -7,6 +7,7 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/service_8080/pom.xml" />
         <option value="$PROJECT_DIR$/service_8084/pom.xml" />
+        <option value="$PROJECT_DIR$/custom_event_listener/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

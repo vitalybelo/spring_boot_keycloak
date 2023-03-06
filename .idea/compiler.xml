@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="service_8080" />
         <module name="service_8084" />
+        <module name="custom_event_listener" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

@@ -46,6 +46,7 @@ class SecurityConfig {
                 .addLogoutHandler(keycloakLogoutHandler)
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
+//                .deleteCookies("JSESSIONID")
                 .logoutSuccessUrl("/");
         http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
         return http.build();
