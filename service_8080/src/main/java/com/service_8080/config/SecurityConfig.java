@@ -13,11 +13,10 @@ import org.springframework.security.web.authentication.session.RegisterSessionAu
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
 /**
- * метод oauth2Login() добавляет OAuth2LoginAuthenticationFilter в цепочку фильтров. Этот фильтр перехватывает
- * запросы и применяет необходимую логику для аутентификации OAuth 2. Метод oauth2ResourceServer проверит связанный
- * токен JWT с нашим сервером Keycloak. Мы настраиваем доступ на основе полномочий и ролей в методе configure().
- * Эти ограничения гарантируют, что каждый запрос к /customers/* будет авторизован только в том случае, если
- * запрашивающий его является аутентифицированным пользователем с ролью USER.
+ * метод oauth2Login() добавляет OAuth2LoginAuthenticationFilter в цепочку фильтров.
+ * Этот фильтр перехватывает запросы и применяет необходимую логику для аутентификации OAuth 2.
+ * Метод logout() настраивает логику выхода пользователя из Oidc и Keycloak по back channel
+ * Метод oauth2ResourceServer проверит связанный токен JWT с нашим сервером Keycloak.
  */
 
 @Configuration
