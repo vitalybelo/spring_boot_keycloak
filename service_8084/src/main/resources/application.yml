@@ -14,12 +14,15 @@ spring:
 
         provider:
           keycloak:
-            issuer-uri: http://localhost:8180/realms/SpringBootKeycloak
+#            issuer-uri: http://localhost:8180/realms/SpringBootKeycloak
+            issuer-uri: http://172.29.92.91:8080/realms/SpringBootKeycloak
             user-name-attribute: preferred_username
 
       resource-server:
         jwt:
-          issuer-uri: http://localhost:8180/realms/SpringBootKeycloak
-          jwk-set-uri: http://localhost:8180/realms/SpringBootKeycloak/protocol/openid-connect/certs
+#          issuer-uri: http://localhost:8180/realms/SpringBootKeycloak
+#          jwk-set-uri: http://localhost:8180/realms/SpringBootKeycloak/protocol/openid-connect/certs
+          issuer-uri: http://172.29.92.91:8080/realms/SpringBootKeycloak
+          jwk-set-uri: http://172.29.92.91:8080/realms/SpringBootKeycloak/protocol/openid-connect/certs
 
 
