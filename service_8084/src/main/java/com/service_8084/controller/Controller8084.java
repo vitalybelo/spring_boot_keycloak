@@ -1,12 +1,12 @@
 package com.service_8084.controller;
 
-import com.service_8084.config.KeycloakTokenParser;
+import com.service_8084.config.KeycloakOidcUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 
 @Controller
 public class Controller8084 {
@@ -15,46 +15,58 @@ public class Controller8084 {
     private HttpServletRequest request;
 
     @GetMapping(path = "/")
-    public String index(Principal principal, Model model) {
-        KeycloakTokenParser roles = new KeycloakTokenParser(principal);
-        model.addAttribute("username", principal.getName());
-        model.addAttribute("roles", roles.getRolesArray());
+    public String index(Authentication authentication, Model model)
+    {
+        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(authentication);
+        model.addAttribute("username", userInfo.getUser().getFullName());
+        model.addAttribute("roles", userInfo.getRolesList());
         return "external";
     }
 
-    @GetMapping("/logout") // не задействована пока
+    /**
+     * при использовании spring security oauth2 - сервис сюда не попадает, запрос перехватывает SPRING
+     */
+    @GetMapping("/logout")
     public String logout() throws Exception {
         request.logout();
         return "redirect:/";
     }
 
+    @GetMapping("/custom_logout")
+    public String custom_logout() throws Exception {
+        request.logout();
+        //return "custom_logout";
+        return "redirect:/";
+    }
+
     @GetMapping(path = "/customers1")
-    public String linkPage1(Principal principal, Model model)
+    public String linkPage1(Authentication authentication, Model model)
     {
-        System.out.println(principal.toString());
-        model.addAttribute("username", principal.getName());
+        System.out.println(authentication.getPrincipal());
+        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(authentication);
+        model.addAttribute("username", userInfo.getUser().getFullName());
         return "customers1";
     }
 
     @GetMapping(path = "/customers2")
-    public String linkPage2(Principal principal, Model model)
+    public String linkPage2(Authentication authentication, Model model)
     {
-        System.out.println(principal.toString());
-        KeycloakTokenParser roles = new KeycloakTokenParser(principal);
-        if (roles.getRolesList().contains("GRANT")) {
-            model.addAttribute("username", principal.getName());
+        System.out.println(authentication.getPrincipal());
+        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(authentication);
+        if (userInfo.getRolesList().contains("GRANT")) {
+            model.addAttribute("username", userInfo.getUser().getFullName());
             return "customers2";
         }
         return "denied";
     }
 
     @GetMapping(path = "/customers3")
-    public String linkPage3(Principal principal, Model model)
+    public String linkPage3(Authentication authentication, Model model)
     {
-        System.out.println(principal.toString());
-        KeycloakTokenParser roles = new KeycloakTokenParser(principal);
-        if (roles.getRolesList().contains("DELETE")) {
-            model.addAttribute("username", principal.getName());
+        System.out.println(authentication.getPrincipal());
+        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(authentication);
+        if (userInfo.getRolesList().contains("DELETE")) {
+            model.addAttribute("username", userInfo.getUser().getFullName());
             return "customers3";
         }
         return "denied";

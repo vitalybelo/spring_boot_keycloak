@@ -2,7 +2,7 @@ package com.service_8084.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -13,9 +13,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+
 /**
- * Класс KeycloakLogoutHandler реализует класс LogoutHandler и отправляет запрос на выход в Keycloak.
- * После выполнения выхода из keycloak, появляется страница авторизации (или странице редиректа из настроек сервера)
+ * Класс KeycloakLogoutHandler реализует интерфейс LogoutHandler и отправляет запрос на выход в Keycloak.
  */
 @Component
 public class KeycloakLogoutHandler implements LogoutHandler {
@@ -35,11 +36,16 @@ public class KeycloakLogoutHandler implements LogoutHandler {
     private void logoutFromKeycloak(OidcUser user)
     {
         String endSessionEndpoint = user.getIssuer() + "/protocol/openid-connect/logout";
+        String clientId = user.getClaimAsString("azp");
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromUriString(endSessionEndpoint)
+                .userInfo(user.getUserInfo().toString())
+                .queryParam("client_id", clientId)
+                .queryParam("logout_hint", user.getName())
                 .queryParam("id_token_hint", user.getIdToken().getTokenValue());
 
         ResponseEntity<String> logoutResponse = restTemplate.getForEntity(builder.toUriString(), String.class);
+
         if (logoutResponse.getStatusCode().is2xxSuccessful()) {
             logger.info("Successfully logged out from Keycloak");
         } else {
