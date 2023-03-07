@@ -10,6 +10,7 @@
         <module name="service_8080" />
         <module name="service_8084" />
         <module name="custom_event_listener" />
+        <module name="custom_spring_listener" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -18,6 +19,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="custom_spring_listener" options="-parameters" />
       <module name="service_8080" options="-parameters" />
       <module name="service_8084" options="-parameters" />
     </option>

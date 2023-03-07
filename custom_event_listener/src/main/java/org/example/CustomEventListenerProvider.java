@@ -52,7 +52,7 @@ public class CustomEventListenerProvider implements EventListenerProvider {
 
             try {
                 senderProvider.send(session.getContext().getRealm().getSmtpConfig(),
-                        "vitaly.belo@gmail.com",
+                        "vitalybelo@gmail.com",
                         "Keycloak - HELLO WORLD", emailPlainContent, emailHtmlContent);
             } catch (EmailException e) {
                 log.error("Failed to send email", e);
