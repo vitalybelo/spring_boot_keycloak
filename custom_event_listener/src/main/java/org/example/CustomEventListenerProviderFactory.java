@@ -5,7 +5,6 @@ import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.EventListenerProviderFactory;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
-import org.springframework.boot.SpringApplication;
 
 public class CustomEventListenerProviderFactory implements EventListenerProviderFactory {
 
