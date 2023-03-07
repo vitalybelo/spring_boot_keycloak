@@ -1,5 +1,6 @@
 package org.example;
 
+import io.smallrye.common.constraint.NotNull;
 import org.jboss.logging.Logger;
 import org.keycloak.email.DefaultEmailSenderProvider;
 import org.keycloak.email.EmailException;
@@ -19,7 +20,7 @@ public class CustomEventListenerProvider implements EventListenerProvider {
     private final KeycloakSession session;
     private final RealmProvider model;
 
-    public CustomEventListenerProvider(KeycloakSession session) {
+    public CustomEventListenerProvider(@NotNull KeycloakSession session) {
         this.session = session;
         this.model = session.realms();
     }
@@ -27,9 +28,7 @@ public class CustomEventListenerProvider implements EventListenerProvider {
     @Override
     public void onEvent(Event event)
     {
-        log.info("-----------------------------------------------------------");
-        log.infof("## NEW %s EVENT", event.getType());
-        log.info("-----------------------------------------------------------");
+        log.infof("## NEW EVENT ---> %s", event.getType());
 
         if (EventType.REGISTER.equals(event.getType())) {
 
@@ -63,9 +62,7 @@ public class CustomEventListenerProvider implements EventListenerProvider {
 
     @Override
     public void onEvent(AdminEvent adminEvent, boolean b) {
-        log.info("-----------------------------------------------------------");
         log.infof("## NEW %s EVENT", adminEvent.getOperationType());
-        log.info("-----------------------------------------------------------");
     }
 
     @Override

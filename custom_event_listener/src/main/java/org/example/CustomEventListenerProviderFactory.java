@@ -5,6 +5,7 @@ import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.EventListenerProviderFactory;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
+import org.springframework.boot.SpringApplication;
 
 public class CustomEventListenerProviderFactory implements EventListenerProviderFactory {
 
@@ -15,12 +16,10 @@ public class CustomEventListenerProviderFactory implements EventListenerProvider
 
     @Override
     public void init(Config.Scope scope) {
-
     }
 
     @Override
     public void postInit(KeycloakSessionFactory keycloakSessionFactory) {
-
     }
 
     @Override
