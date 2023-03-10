@@ -6,6 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 @org.springframework.stereotype.Controller
 public class Controller8080 {
@@ -43,7 +47,8 @@ public class Controller8080 {
     {
         System.out.println(principal);
         KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
-        if (userInfo.getRolesList().contains("USER")) {
+        if (userInfo.getRolesList().contains("ГОСТЬ")) {
+            // TODO разрешенные действия для роли ГОСТЬ
             model.addAttribute("username", userInfo.getUser().getFullName());
             return "customers1";
         }
