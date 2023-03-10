@@ -47,8 +47,9 @@ public class Controller8080 {
     {
         System.out.println(principal);
         KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
-        if (userInfo.getRolesList().contains("ГОСТЬ")) {
-            // TODO разрешенные действия для роли ГОСТЬ
+
+        if (userInfo.getRolesList().contains("РОЛЬ 1") || userInfo.getRolesList().contains("РОЛЬ 2")) {
+            // TODO разрешенные действия для этой роли
             model.addAttribute("username", userInfo.getUser().getFullName());
             return "customers1";
         }
@@ -61,6 +62,7 @@ public class Controller8080 {
         System.out.println(principal.toString());
         KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
         if (userInfo.getRolesList().contains("ADMIN")) {
+            // TODO разрешенные действия для этой роли
             model.addAttribute("username", userInfo.getUser().getFullName());
             return "customers2";
         }
@@ -73,6 +75,7 @@ public class Controller8080 {
         System.out.println(principal.toString());
         KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
         if (userInfo.getRolesList().contains("BOSS")) {
+            // TODO разрешенные действия для этой роли
             model.addAttribute("username", userInfo.getUser().getFullName());
             return "customers3";
         }

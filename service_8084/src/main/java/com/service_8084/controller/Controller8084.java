@@ -53,7 +53,8 @@ public class Controller8084 {
     {
         System.out.println(authentication.getPrincipal());
         KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(authentication);
-        if (userInfo.getRolesList().contains("GRANT")) {
+        if (userInfo.getRolesList().contains("GRANT") || userInfo.getRolesList().contains("USER")) {
+            // TODO разрешенные действия для этой роли
             model.addAttribute("username", userInfo.getUser().getFullName());
             return "customers2";
         }
@@ -66,6 +67,7 @@ public class Controller8084 {
         System.out.println(authentication.getPrincipal());
         KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(authentication);
         if (userInfo.getRolesList().contains("DELETE")) {
+            // TODO разрешенные действия для этой роли
             model.addAttribute("username", userInfo.getUser().getFullName());
             return "customers3";
         }
