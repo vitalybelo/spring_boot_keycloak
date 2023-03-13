@@ -15,6 +15,7 @@
         <option value="$PROJECT_DIR$/auth/pom.xml" />
         <option value="$PROJECT_DIR$/custom_keycloak_listener/pom.xml" />
         <option value="$PROJECT_DIR$/custom_spring_listener/pom.xml" />
+        <option value="$PROJECT_DIR$/service_autorities/pom.xml" />
       </set>
     </option>
   </component>

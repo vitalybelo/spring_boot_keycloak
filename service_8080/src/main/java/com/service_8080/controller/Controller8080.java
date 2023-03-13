@@ -1,6 +1,6 @@
 package com.service_8080.controller;
 
-import com.service_8080.config.KeycloakOidcUserInfo;
+import org.authorities.KeycloakOidcUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +23,7 @@ public class Controller8080 {
     }
 
     /**
-     * при использовании spring security oauth2 - сервис сюда не попадает, запрос перехватывает SPRING
+     * при использовании spring security oauth2 - сервис сюда не попадает, запрос перехватывает SPRING SECURITY
      */
     @GetMapping("/logout") // не задействована
     public String logout() throws Exception {

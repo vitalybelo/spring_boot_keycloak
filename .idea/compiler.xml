@@ -10,12 +10,14 @@
         <module name="service_8080" />
         <module name="service_8084" />
         <module name="custom_event_listener" />
+        <module name="service_authorities" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="auth" target="17" />
       <module name="custom_keycloak_listener" target="11" />
       <module name="custom_spring_listener" target="11" />
+      <module name="service_autorities" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
