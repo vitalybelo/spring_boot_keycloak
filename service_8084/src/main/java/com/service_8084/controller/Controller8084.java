@@ -24,7 +24,7 @@ public class Controller8084 {
     }
 
     /**
-     * при использовании spring security oauth2 - сервис сюда не попадает, запрос перехватывает SPRING
+     * при использовании spring security oauth2 - сервис сюда не попадает, запрос перехватывает SPRING SECURITY
      */
     @GetMapping("/logout")
     public String logout() throws Exception {
