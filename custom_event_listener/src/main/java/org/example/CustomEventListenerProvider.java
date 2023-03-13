@@ -14,8 +14,8 @@ import java.util.Set;
  */
 public class CustomEventListenerProvider implements EventListenerProvider {
 
-    private Set<EventType> excludedEvents;
-    private Set<OperationType> excludedAdminOperations;
+    private final Set<EventType> excludedEvents;
+    private final Set<OperationType> excludedAdminOperations;
 
     public CustomEventListenerProvider(Set<EventType> excludedEvents, Set<OperationType> excludedAdminOperations) {
         this.excludedEvents = excludedEvents;
