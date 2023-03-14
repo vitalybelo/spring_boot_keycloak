@@ -22,7 +22,7 @@ public class KeycloakOidcUser {
     public KeycloakOidcUser(Authentication auth) {
         this.user = (OidcUser) auth.getPrincipal();
         extractRolesList();
-        // TODO - включить ,если парсинг json не работает или недоступен :: import net.minidev.json.JSONArray;
+        // TODO - включить, если парсинг json не работает или недоступен :: import net.minidev.json.JSONArray;
         // extractRolesLegacyParser();
     }
 
@@ -30,7 +30,7 @@ public class KeycloakOidcUser {
         Authentication auth = (Authentication) principal; // это нужно
         this.user = (OidcUser) auth.getPrincipal();
         extractRolesList();
-        // TODO - включить ,если парсинг json не работает или недоступен :: import net.minidev.json.JSONArray;
+        // TODO - включить, если парсинг json не работает или недоступен :: import net.minidev.json.JSONArray;
         // extractRolesLegacyParser();
     }
 
