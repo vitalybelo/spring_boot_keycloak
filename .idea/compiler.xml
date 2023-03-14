@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="service_8080" />
+        <module name="service_oidc" />
         <module name="service_8084" />
         <module name="custom_event_listener" />
       </profile>
@@ -26,6 +27,7 @@
       <module name="custom_spring_listener" options="" />
       <module name="service_8080" options="-parameters" />
       <module name="service_8084" options="-parameters" />
+      <module name="service_oidc" options="-parameters" />
     </option>
   </component>
 </project>
