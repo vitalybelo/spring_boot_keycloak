@@ -63,7 +63,7 @@ public class KeycloakOidcUserInfo {
                 if (rolesClaimMap.get("roles") instanceof List) {
                     jsonArray.addAll((List) rolesClaimMap.get("roles"));
                     for (Object o : jsonArray)
-                        rolesList.add(o.toString().toUpperCase());
+                        rolesList.add(o.toString()); //.toUpperCase());
                 }
             }
         }

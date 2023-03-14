@@ -23,7 +23,8 @@ public class Controller8080 {
     }
 
     /**
-     * при использовании spring security oauth2 - сервис сюда не попадает, запрос перехватывает SPRING SECURITY
+     * при использовании spring security oauth2 - сервис сюда не попадает,
+     * запрос перехватывает SPRING SECURITY и перенаправляет на свою страницу front channel
      */
     @GetMapping("/logout") // не задействована
     public String logout() throws Exception {
@@ -43,8 +44,9 @@ public class Controller8080 {
     {
         System.out.println(principal);
         KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
-        if (userInfo.getRolesList().contains("РОЛЬ 1") || userInfo.getRolesList().contains("РОЛЬ 2")) {
-            // TODO разрешенные действия для этой роли
+        if (userInfo.getRolesList().contains("роль 1") || userInfo.getRolesList().contains("роль 2"))
+        {   // TODO разрешенные действия для этой роли
+
             model.addAttribute("username", userInfo.getUser().getFullName());
             return "customers1";
         }
@@ -56,8 +58,10 @@ public class Controller8080 {
     {
         System.out.println(principal.toString());
         KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
-        if (userInfo.getRolesList().contains("ADMIN")) {
-            // TODO разрешенные действия для этой роли
+        if (userInfo.getRolesList().contains("Admin"))
+        {   // TODO разрешенные действия для этой роли
+
+
             model.addAttribute("username", userInfo.getUser().getFullName());
             return "customers2";
         }
@@ -69,8 +73,9 @@ public class Controller8080 {
     {
         System.out.println(principal.toString());
         KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
-        if (userInfo.getRolesList().contains("BOSS")) {
-            // TODO разрешенные действия для этой роли
+        if (userInfo.getRolesList().contains("Boss"))
+        {   // TODO разрешенные действия для этой роли
+
             model.addAttribute("username", userInfo.getUser().getFullName());
             return "customers3";
         }

@@ -24,7 +24,8 @@ public class Controller8084 {
     }
 
     /**
-     * при использовании spring security oauth2 - сервис сюда не попадает, запрос перехватывает SPRING SECURITY
+     * при использовании spring security oauth2 - сервис сюда не попадает,
+     * запрос перехватывает SPRING SECURITY и перенаправляет на свою страницу front channel
      */
     @GetMapping("/logout")
     public String logout() throws Exception {
@@ -53,8 +54,9 @@ public class Controller8084 {
     {
         System.out.println(authentication.getPrincipal());
         KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(authentication);
-        if (userInfo.getRolesList().contains("GRANT") || userInfo.getRolesList().contains("USER")) {
-            // TODO разрешенные действия для этой роли
+        if (userInfo.getRolesList().contains("Grant") || userInfo.getRolesList().contains("User"))
+        {   // TODO разрешенные действия для этой роли
+
             model.addAttribute("username", userInfo.getUser().getFullName());
             return "customers2";
         }
@@ -66,8 +68,9 @@ public class Controller8084 {
     {
         System.out.println(authentication.getPrincipal());
         KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(authentication);
-        if (userInfo.getRolesList().contains("DELETE")) {
-            // TODO разрешенные действия для этой роли
+        if (userInfo.getRolesList().contains("Delete"))
+        {   // TODO разрешенные действия для этой роли
+
             model.addAttribute("username", userInfo.getUser().getFullName());
             return "customers3";
         }

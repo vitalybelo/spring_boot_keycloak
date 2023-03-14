@@ -34,10 +34,17 @@ class SecurityConfig {
         return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
 
+    /**
+     * Метод .antMatchers("/**") - определяет uri которые будут защищены
+     * этот uri является продолжением Valid redirect URIs - из настроек - Realms -> Client -> login-app
+     * Метод .oauth2Login - конфигурирует вход в приложение с логином и паролем
+     * Метод .logout - настраивает политику выхода из keycloak
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/*").authenticated()
+                .antMatchers("/**")
+                .authenticated()
                 .anyRequest().permitAll();
         http.oauth2Login()
                 .and()

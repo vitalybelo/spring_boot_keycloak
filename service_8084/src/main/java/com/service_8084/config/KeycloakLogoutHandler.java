@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-
 /**
  * Класс KeycloakLogoutHandler реализует интерфейс LogoutHandler и отправляет запрос на выход в Keycloak.
  */
@@ -33,6 +32,10 @@ public class KeycloakLogoutHandler implements LogoutHandler {
         logoutFromKeycloak((OidcUser) auth.getPrincipal());
     }
 
+    /**
+     * Метод реализует выход из keycloak запросом по back channel
+     * @param user - информация о пользователе, id_token + утверждения из jwt токена
+     */
     private void logoutFromKeycloak(OidcUser user)
     {
         String endSessionEndpoint = user.getIssuer() + "/protocol/openid-connect/logout";
