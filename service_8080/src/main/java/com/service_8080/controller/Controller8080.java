@@ -1,6 +1,6 @@
 package com.service_8080.controller;
 
-import org.authorities.KeycloakOidcUserInfo;
+import com.service_8080.config.KeycloakOidcUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

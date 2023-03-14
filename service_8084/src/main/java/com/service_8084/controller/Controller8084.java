@@ -1,6 +1,6 @@
 package com.service_8084.controller;
 
-import org.authorities.KeycloakOidcUserInfo;
+import com.service_8084.config.KeycloakOidcUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
