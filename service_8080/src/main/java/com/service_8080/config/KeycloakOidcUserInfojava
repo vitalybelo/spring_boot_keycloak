@@ -1,8 +1,9 @@
-package com.service_oidc;
+package com.service_8080.config;
 
 import net.minidev.json.JSONArray;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import java.security.Principal;
 import java.util.*;
 
@@ -14,23 +15,30 @@ import java.util.*;
  * Здесь же: вкладка Scope -> добавляем в него все роли которые вы будете учитывать при работе (не обязательно)
  * (если ничего не выбрано в scope описаный выше, по умолчанию будут переданы все роли включая 3 роли default)
  */
-public class KeycloakOidcUser {
+public class KeycloakOidcUserInfo {
 
     private final OidcUser user;
     private List<String> rolesList = new ArrayList<>();
 
-    public KeycloakOidcUser(Authentication auth) {
+    public KeycloakOidcUserInfo(Authentication auth) {
         this.user = (OidcUser) auth.getPrincipal();
         extractRolesList();
-        // TODO - включить, если парсинг json не работает или недоступен :: import net.minidev.json.JSONArray;
+        // TODO - включить ,если парсинг json не работает или недоступен :: import net.minidev.json.JSONArray;
         // extractRolesLegacyParser();
     }
 
-    public KeycloakOidcUser(Principal principal) {
+    public KeycloakOidcUserInfo(OAuth2AuthenticationToken auth) {
+        this.user = (OidcUser) auth.getPrincipal();
+        extractRolesList();
+        // TODO - включить ,если парсинг json не работает или недоступен :: import net.minidev.json.JSONArray;
+        // extractRolesLegacyParser();
+    }
+
+    public KeycloakOidcUserInfo(Principal principal) {
         Authentication auth = (Authentication) principal; // это нужно
         this.user = (OidcUser) auth.getPrincipal();
         extractRolesList();
-        // TODO - включить, если парсинг json не работает или недоступен :: import net.minidev.json.JSONArray;
+        // TODO - включить ,если парсинг json не работает или недоступен :: import net.minidev.json.JSONArray;
         // extractRolesLegacyParser();
     }
 

@@ -1,8 +1,9 @@
-package com.service_8080.config;
+package com.auth;
 
 import net.minidev.json.JSONArray;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import java.security.Principal;
 import java.util.*;
 
@@ -20,6 +21,13 @@ public class KeycloakOidcUserInfo {
     private List<String> rolesList = new ArrayList<>();
 
     public KeycloakOidcUserInfo(Authentication auth) {
+        this.user = (OidcUser) auth.getPrincipal();
+        extractRolesList();
+        // TODO - включить ,если парсинг json не работает или недоступен :: import net.minidev.json.JSONArray;
+        // extractRolesLegacyParser();
+    }
+
+    public KeycloakOidcUserInfo(OAuth2AuthenticationToken auth) {
         this.user = (OidcUser) auth.getPrincipal();
         extractRolesList();
         // TODO - включить ,если парсинг json не работает или недоступен :: import net.minidev.json.JSONArray;
