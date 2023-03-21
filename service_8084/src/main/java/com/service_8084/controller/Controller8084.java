@@ -1,6 +1,6 @@
 package com.service_8084.controller;
 
-import com.service_8084.config.KeycloakOidcUserInfo;
+import com.auth.KeycloakOidcUserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
