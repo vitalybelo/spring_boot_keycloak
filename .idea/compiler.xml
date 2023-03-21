@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="service_8080" />
+        <module name="service_8000" />
         <module name="service_8084" />
         <module name="custom_event_listener" />
         <module name="common" />
@@ -17,6 +18,7 @@
       <module name="auth" target="17" />
       <module name="custom_keycloak_listener" target="11" />
       <module name="custom_spring_listener" target="11" />
+      <module name="service_8088" target="1.8" />
       <module name="service_authorities" target="11" />
       <module name="service_autorities" target="11" />
       <module name="service_oidc" target="1.8" />
@@ -26,6 +28,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="custom_event_listener" options="" />
       <module name="custom_spring_listener" options="" />
+      <module name="service_8000" options="" />
       <module name="service_8080" options="-parameters" />
       <module name="service_8084" options="-parameters" />
       <module name="service_oidc" options="-parameters" />

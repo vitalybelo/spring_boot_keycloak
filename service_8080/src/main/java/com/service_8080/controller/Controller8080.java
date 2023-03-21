@@ -1,6 +1,6 @@
 package com.service_8080.controller;
 
-//
+import com.auth.AuthenticationService;
 import com.auth.KeycloakOidcUserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +36,8 @@ public class Controller8080 {
                         OAuth2AuthenticationToken auth2,
                         Model model)
     {
+        AuthenticationService service = new AuthenticationService();
+        Authentication a = service.getUserInfo();
         // ----------------------------------------------------------------------
         // Пример самостоятельного чтения ролей из principal
         // ----------------------------------------------------------------------

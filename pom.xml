@@ -17,10 +17,11 @@
     </properties>
 
     <modules>
+        <module>common</module>
         <module>custom_event_listener</module>
         <module>service_8080</module>
         <module>service_8084</module>
-        <module>common</module>
+        <module>service_8000</module>
     </modules>
 
 </project>
