@@ -37,7 +37,7 @@ public class Controller8000 {
                         Model model)
     {
         AuthenticationService service = new AuthenticationService();
-        Authentication a = service.getUserInfo();
+        Authentication a = service.getUserAuthentication();
         // ----------------------------------------------------------------------
         // Пример самостоятельного чтения ролей из principal
         // ----------------------------------------------------------------------
@@ -56,7 +56,6 @@ public class Controller8000 {
             // пользователь без ролей, список ролей из claims пустой
             logger.info(principal.getName() + " :: роли не обнаружены");
         }
-
         // ----------------------------------------------------------------------
         // Пример чтения ролей из principal с помощью класса KeycloakOidcUserInfo
         // ----------------------------------------------------------------------

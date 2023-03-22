@@ -37,7 +37,7 @@ public class Controller8080 {
                         Model model)
     {
         AuthenticationService service = new AuthenticationService();
-        Authentication a = service.getUserInfo();
+        Authentication a = service.getUserAuthentication();
         // ----------------------------------------------------------------------
         // Пример самостоятельного чтения ролей из principal
         // ----------------------------------------------------------------------

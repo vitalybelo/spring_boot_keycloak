@@ -5,7 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class AuthenticationService {
 
-    public Authentication getUserInfo() {
+    public Authentication getUserAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
