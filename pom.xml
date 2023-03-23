@@ -22,6 +22,7 @@
         <module>service_8080</module>
         <module>service_8084</module>
         <module>service_8000</module>
+        <module>service_9000</module>
     </modules>
 
 </project>
