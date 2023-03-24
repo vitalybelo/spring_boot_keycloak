@@ -37,7 +37,8 @@ public class Controller8000 {
                         Model model)
     {
         AuthenticationService service = new AuthenticationService();
-        Authentication a = service.getUserAuthentication();
+        Authentication authentication = service.getUserAuthentication();
+        OidcUser oidcUser = service.getUserOidc();
         // ----------------------------------------------------------------------
         // Пример самостоятельного чтения ролей из principal
         // ----------------------------------------------------------------------
@@ -47,7 +48,13 @@ public class Controller8000 {
             String roles = user.getAttribute("realm_access").toString();
             if (roles.contains("Admin")) {
                 // авторизация успешная - роль обнаружена
-                logger.info(principal.getName() + " :: " + roles + " :: обнаружена роль Admin");
+                logger.info(user.getName() + " :: " + roles + " :: обнаружена роль Admin");
+                if (user.hasClaim("phone_number"))
+                    logger.info("ADMIN :: found user attribute phone_number :: " + user.getClaim("phone_number"));
+                if (user.hasClaim("birthdate"))
+                    logger.info("ADMIN :: found user attribute birthdate :: " + user.getClaim("birthdate"));
+                if (user.hasClaim("nickname"))
+                    logger.info("ADMIN :: found user attribute birthdate :: " + user.getClaim("nickname"));
             } else {
                 // авторизация провалена
                 logger.info(principal.getName() + " :: " + roles);
@@ -67,7 +74,7 @@ public class Controller8000 {
 
     /**
      * при использовании spring security oauth2 - сервис сюда не попадает,
-     * запрос перехватывает SPRING SECURITY и перенаправляет на свою страницу front channel
+     * запрос перехватывает SPRING SECURITY и перенаправляет на свою страницу logout
      */
     @GetMapping("/logout") // не задействована
     public String logout() throws Exception {
