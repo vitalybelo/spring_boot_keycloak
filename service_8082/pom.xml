@@ -10,8 +10,9 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.service_8000</groupId>
+    <groupId>com.service_8082</groupId>
     <artifactId>service_8082</artifactId>
+    <version>1.0.2</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
