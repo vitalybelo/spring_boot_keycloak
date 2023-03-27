@@ -1,4 +1,4 @@
-package com.service_8000.config;
+package com.service_8082.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

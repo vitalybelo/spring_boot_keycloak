@@ -25,12 +25,5 @@ public class AuthenticationService {
         return (OidcUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
-    public String getFullName() {
-        OidcUser user = (OidcUser) SecurityContextHolder.getContext().getAuthentication();
-
-
-    }
-
-
 
 }

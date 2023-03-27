@@ -1,4 +1,4 @@
-package com.service_8000.controller;
+package com.service_8082.controller;
 
 import com.auth.AuthenticationService;
 import com.auth.KeycloakOidcUserInfo;
@@ -24,11 +24,11 @@ import java.security.Principal;
  * Констуктор класса KeycloakOidcUserInfo принимает любой из 3-х описанных выше параметров.
  */
 @Controller
-public class Controller8000 {
+public class Controller8082 {
 
     @Autowired
     private HttpServletRequest request;
-    private static final Logger logger = LoggerFactory.getLogger(Controller8000.class);
+    private static final Logger logger = LoggerFactory.getLogger(Controller8082.class);
 
     @GetMapping(path = "/")
     public String index(Principal principal,
@@ -39,30 +39,6 @@ public class Controller8000 {
         AuthenticationService service = new AuthenticationService();
         Authentication authentication = service.getUserAuthentication();
         OidcUser oidcUser = service.getUserOidc();
-        // ----------------------------------------------------------------------
-        // Пример самостоятельного чтения ролей из principal
-        // ----------------------------------------------------------------------
-        OidcUser user = ((OidcUser) auth1.getPrincipal());
-        if (user.hasClaim("realm_access")) {
-            // проверяем есть у пользователя хотя бы одна роль
-            String roles = user.getAttribute("realm_access").toString();
-            if (roles.contains("Admin")) {
-                // авторизация успешная - роль обнаружена
-                logger.info(user.getName() + " :: " + roles + " :: обнаружена роль Admin");
-                if (user.hasClaim("phone_number"))
-                    logger.info("ADMIN :: found user attribute phone_number :: " + user.getClaim("phone_number"));
-                if (user.hasClaim("birthdate"))
-                    logger.info("ADMIN :: found user attribute birthdate :: " + user.getClaim("birthdate"));
-                if (user.hasClaim("nickname"))
-                    logger.info("ADMIN :: found user attribute birthdate :: " + user.getClaim("nickname"));
-            } else {
-                // авторизация провалена
-                logger.info(principal.getName() + " :: " + roles);
-            }
-        } else {
-            // пользователь без ролей, список ролей из claims пустой
-            logger.info(principal.getName() + " :: роли не обнаружены");
-        }
         // ----------------------------------------------------------------------
         // Пример чтения ролей из principal с помощью класса KeycloakOidcUserInfo
         // ----------------------------------------------------------------------
