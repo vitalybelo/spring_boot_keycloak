@@ -1,5 +1,6 @@
 package com.service_8084.controller;
 
+import com.auth.AuthenticationService;
 import com.auth.KeycloakOidcUserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,36 +31,17 @@ public class Controller8084 {
     private static final Logger logger = LoggerFactory.getLogger(Controller8084.class);
 
     @GetMapping(path = "/")
-    public String index(Principal principal,
-                        Authentication auth1,
-                        OAuth2AuthenticationToken auth2,
-                        Model model)
+    public String index(Principal principal, Model model)
     {
-        // ----------------------------------------------------------------------
-        // Пример самостоятельного чтения ролей из principal
-        // ----------------------------------------------------------------------
-        OidcUser user = ((OidcUser) auth1.getPrincipal());
-        if (user.hasClaim("realm_access")) {
-            // проверяем есть у пользователя хотя бы одна роль
-            String roles = user.getAttribute("realm_access").toString();
-            if (roles.contains("Alex")) {
-                // авторизация успешная - роль обнаружена
-                logger.info(principal.getName() + " :: " + roles + " :: обнаружена роль Alex");
-            } else {
-                // авторизация провалена
-                logger.info(principal.getName() + " :: " + roles);
-            }
-        } else {
-            // пользователь без ролей, список ролей из claims пустой
-            logger.info(principal.getName() + " :: роли не обнаружены");
-        }
-
+        AuthenticationService service = new AuthenticationService();
+        Authentication authentication = service.getUserAuthentication();
+        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
+        OidcUser oidcUser = service.getUserOidc();
         // ----------------------------------------------------------------------
         // Пример чтения ролей из principal с помощью класса KeycloakOidcUserInfo
         // ----------------------------------------------------------------------
-        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(auth2);
-        model.addAttribute("username", userInfo.getUser().getFullName());
-        model.addAttribute("roles", userInfo.getRolesList());
+        model.addAttribute("username", service.getFullName());
+        model.addAttribute("roles", service.getRolesList());
         return "external";
     }
 
@@ -81,19 +63,19 @@ public class Controller8084 {
     }
 
     @GetMapping(path = "/customers1")
-    public String linkPage1(Authentication authentication, Model model)
+    public String linkPage1(Principal principal, Model model)
     {
-        logger.info(authentication.getPrincipal().toString());
-        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(authentication);
+        logger.info(principal.toString());
+        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
         model.addAttribute("username", userInfo.getUser().getFullName());
         return "customers1";
     }
 
     @GetMapping(path = "/customers2")
-    public String linkPage2(Authentication authentication, Model model)
+    public String linkPage2(Principal principal, Model model)
     {
-        logger.info(authentication.getPrincipal().toString());
-        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(authentication);
+        logger.info(principal.toString());
+        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
         if (userInfo.getRolesList().contains("Grant") || userInfo.getRolesList().contains("User"))
         {   // TODO разрешенные действия для этой роли
 
@@ -104,10 +86,10 @@ public class Controller8084 {
     }
 
     @GetMapping(path = "/customers3")
-    public String linkPage3(Authentication authentication, Model model)
+    public String linkPage3(Principal principal, Model model)
     {
-        logger.info(authentication.getPrincipal().toString());
-        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(authentication);
+        logger.info(principal.toString());
+        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
         if (userInfo.getRolesList().contains("Delete"))
         {   // TODO разрешенные действия для этой роли
 

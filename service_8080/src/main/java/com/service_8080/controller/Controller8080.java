@@ -31,20 +31,18 @@ public class Controller8080 {
     private static final Logger logger = LoggerFactory.getLogger(Controller8080.class);
 
     @GetMapping(path = "/")
-    public String index(Principal principal,
-                        Authentication auth1,
-                        OAuth2AuthenticationToken auth2,
-                        Model model)
+    public String index(Principal principal, Model model)
     {
         AuthenticationService service = new AuthenticationService();
-        Authentication a = service.getUserAuthentication();
+        Authentication authentication = service.getUserAuthentication();
+        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
+        OidcUser user = service.getUserOidc();
         // ----------------------------------------------------------------------
         // Пример самостоятельного чтения ролей из principal
         // ----------------------------------------------------------------------
-        OidcUser user = ((OidcUser) auth1.getPrincipal());
-        if (user.hasClaim("realm_access")) {
+        if (user.containsClaim("realm_access")) {
             // проверяем есть у пользователя хотя бы одна роль
-            String roles = user.getAttribute("realm_access").toString();
+            String roles = user.getClaimAsString("realm_access");
             if (roles.contains("Admin")) {
                 // авторизация успешная - роль обнаружена
                 logger.info(principal.getName() + " :: " + roles + " :: обнаружена роль Admin");
@@ -56,11 +54,10 @@ public class Controller8080 {
             // пользователь без ролей, список ролей из claims пустой
             logger.info(principal.getName() + " :: роли не обнаружены");
         }
-
         // ----------------------------------------------------------------------
         // Пример чтения ролей из principal с помощью класса KeycloakOidcUserInfo
         // ----------------------------------------------------------------------
-        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(auth2);
+        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
         model.addAttribute("username", userInfo.getUser().getFullName());
         model.addAttribute("roles", userInfo.getRolesList());
         return "external";

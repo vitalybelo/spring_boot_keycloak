@@ -31,18 +31,16 @@ public class Controller8082 {
     private static final Logger logger = LoggerFactory.getLogger(Controller8082.class);
 
     @GetMapping(path = "/")
-    public String index(Principal principal,
-                        Authentication auth1,
-                        OAuth2AuthenticationToken auth2,
-                        Model model)
+    public String index(Principal principal, Model model)
     {
         AuthenticationService service = new AuthenticationService();
         Authentication authentication = service.getUserAuthentication();
+        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
         OidcUser oidcUser = service.getUserOidc();
         // ----------------------------------------------------------------------
         // Пример чтения ролей из principal с помощью класса KeycloakOidcUserInfo
         // ----------------------------------------------------------------------
-        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(auth2);
+        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
         model.addAttribute("username", userInfo.getUser().getFullName());
         model.addAttribute("roles", userInfo.getRolesList());
         return "external";

@@ -64,7 +64,7 @@ public class KeycloakOidcUserInfo {
     public void extractRolesList()
     {
         rolesList.clear();
-        if (user.hasClaim("realm_access")) {
+        if (user.containsClaim("realm_access")) {
             Map<String, Object> rolesClaimMap = new HashMap<>(user.getClaimAsMap("realm_access"));
             JSONArray jsonArray = new JSONArray();
             if (rolesClaimMap.containsKey("roles")) {
