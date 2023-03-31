@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.example</groupId>
         <artifactId>spring_boot_keycloak</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.2</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
