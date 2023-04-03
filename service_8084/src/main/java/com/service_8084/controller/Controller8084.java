@@ -5,9 +5,6 @@ import com.auth.KeycloakOidcUserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,13 +31,12 @@ public class Controller8084 {
     public String index(Principal principal, Model model)
     {
         AuthenticationService service = new AuthenticationService();
-        Authentication authentication = service.getUserAuthentication();
-        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
-        OidcUser oidcUser = service.getUserOidc();
         // ----------------------------------------------------------------------
-        // Пример чтения ролей из principal с помощью класса KeycloakOidcUserInfo
+        // Пример чтения учётки с помощью класса AuthenticationService()
         // ----------------------------------------------------------------------
         model.addAttribute("username", service.getFullName());
+        model.addAttribute("phonenumber", service.getPhoneNumber());
+        model.addAttribute("position", service.getPosition());
         model.addAttribute("roles", service.getRolesList());
         return "external";
     }

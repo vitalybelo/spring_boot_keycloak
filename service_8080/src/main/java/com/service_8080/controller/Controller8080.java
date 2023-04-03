@@ -34,32 +34,13 @@ public class Controller8080 {
     public String index(Principal principal, Model model)
     {
         AuthenticationService service = new AuthenticationService();
-        Authentication authentication = service.getUserAuthentication();
-        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
-        OidcUser user = service.getUserOidc();
         // ----------------------------------------------------------------------
-        // Пример самостоятельного чтения ролей из principal
+        // Пример чтения учётки с помощью класса AuthenticationService()
         // ----------------------------------------------------------------------
-        if (user.containsClaim("realm_access")) {
-            // проверяем есть у пользователя хотя бы одна роль
-            String roles = user.getClaimAsString("realm_access");
-            if (roles.contains("Admin")) {
-                // авторизация успешная - роль обнаружена
-                logger.info(principal.getName() + " :: " + roles + " :: обнаружена роль Admin");
-            } else {
-                // авторизация провалена
-                logger.info(principal.getName() + " :: " + roles);
-            }
-        } else {
-            // пользователь без ролей, список ролей из claims пустой
-            logger.info(principal.getName() + " :: роли не обнаружены");
-        }
-        // ----------------------------------------------------------------------
-        // Пример чтения ролей из principal с помощью класса KeycloakOidcUserInfo
-        // ----------------------------------------------------------------------
-        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
-        model.addAttribute("username", userInfo.getUser().getFullName());
-        model.addAttribute("roles", userInfo.getRolesList());
+        model.addAttribute("username", service.getFullName());
+        model.addAttribute("phonenumber", service.getPhoneNumber());
+        model.addAttribute("position", service.getPosition());
+        model.addAttribute("roles", service.getRolesList());
         return "external";
     }
 
