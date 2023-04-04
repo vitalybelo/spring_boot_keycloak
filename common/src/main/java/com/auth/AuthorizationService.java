@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Содержит набор методов возвращающих учётные данные из утверждений id токена аутентификации
  */
-public class AuthenticationService {
+public class AuthorizationService {
 
     private OidcUser user;
     private final List<String> rolesList = new ArrayList<>();
@@ -24,7 +24,7 @@ public class AuthenticationService {
      * После этой инициализации, в конструкторе вызывается метод, который считывает список ролей из утверждений (claims)
      * id токена. Получить список - вызов метода getRolesList()
      */
-    public AuthenticationService() {
+    public AuthorizationService() {
         this.user = (OidcUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         extractRolesList();
     }
@@ -33,7 +33,7 @@ public class AuthenticationService {
      * Возвращает информацию о пользователе: id токен, утверждения, стандартную учётку, кастомные аттрибуты.
      * @return - экземпляр класса аутентификации Authentication
      */
-    public Authentication getUserAuthentication() {
+    public Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
@@ -41,7 +41,7 @@ public class AuthenticationService {
      * Возвращает информацию о пользователе: id токен, утверждения, стандартную учётку, кастомные аттрибуты.
      * @return - экземпляр класса аутентификации Oauth2 Open Id Connect :: OidcUser с обширным набором методов
      */
-    public OidcUser getUserOidc() {
+    public OidcUser getOidcUser() {
         return user;
     }
 
@@ -62,9 +62,9 @@ public class AuthenticationService {
     }
 
     /**
-     * Возвращает список ролей назначеных для пользователя. Список ролей формируется при создании
+     * Возвращает список ролей назначенных для пользователя. Список ролей формируется при создании
      * экземпляра класса AuthenticationService, далее не обновляется. Дополнительное обновления списка
-     * не требуется, так он единственный для пользователя. При необходимости, используйте метод обновления
+     * не требуется, так он единственный для пользователя. В случае необходимости, используйте метод обновления
      * списка refreshOidcUser(), при котором из контекста security обновляется principal пользователя
      * @return - List коллекция - список ролей, или пустой
      */
@@ -127,8 +127,53 @@ public class AuthenticationService {
      * Получить список можно с помощью метода getRolesList()
      */
     public void refreshOidcUser() {
-        this.user = (OidcUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        user = (OidcUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         extractRolesList();
+    }
+
+    /**
+     * Проверяет в учётке пользователя наличие запрашиваемой роли.
+     * @param role строковое значение роли, которое проверяется на наличие в учетных данных пользователя
+     * @return true - если роль присвоена этому пользователю, false - такой роли у пользователя нет
+     */
+    public boolean containsRole(CharSequence role)
+    {
+        if (user.containsClaim("realm_access")) {
+            String roles = user.getClaimAsString("realm_access");
+            return roles.contains(role);
+        }
+        return false;
+    }
+
+    /**
+     * Проверяет в учётке пользователя наличие хотя-бы одной роли из запрашиваемого списка ролей
+     * @param roles строковый массив содержащий список запрашиваемых у метода ролей на проверку
+     * @return true - если найдена хотя бы одна роль из списка, false - ни одна роль не найдена
+     */
+    public boolean containsRoles(String[] roles) {
+        if (user.containsClaim("realm_access")) {
+            String roleString = user.getClaimAsString("realm_access");
+            for (String role : roles) {
+                if (roleString.contains(role)) return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Проверяет в учётке пользователя наличие всех запрашиваемых в списке параметров ролей
+     * @param roles строковый массив, содержащий список запрашиваемых у метода ролей на проверку
+     * @return true - только если найдены все роли из запрашиваемого списка, false - если хотя бы одна роль не найдена
+     */
+    public boolean containsAllRoles(String[] roles) {
+        if (user.containsClaim("realm_access")) {
+            String roleString = user.getClaimAsString("realm_access");
+            for (String role : roles) {
+                if (!roleString.contains(role)) return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -145,7 +190,7 @@ public class AuthenticationService {
                 if (rolesClaimMap.get("roles") instanceof List) {
                     jsonArray.addAll((List) rolesClaimMap.get("roles"));
                     for (Object o : jsonArray)
-                        rolesList.add(o.toString()); //.toUpperCase());
+                        rolesList.add(o.toString());
                 }
             }
         }

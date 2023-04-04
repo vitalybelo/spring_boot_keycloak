@@ -1,7 +1,6 @@
 package com.service_8084.controller;
 
-import com.auth.AuthenticationService;
-import com.auth.KeycloakOidcUserInfo;
+import com.auth.AuthorizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 /**
- * Для получения ролей и утверждений из идентификационного токена, контроллеры принимают на вход
- * совместимые (cast) классы аутентификации, которые можно использовать для чтения учётных данных
- * Principal - дает доступ к примитивному классу java.security, методы getName(), учётка как toString()
- * Authentication - класс Spring Security - возвращает principal + большой набор методов учётки пользователя
- * OAuth2AuthenticationToken - класс Spring Security Oauth2 - возвращает principal и учётку пользователя (аналог выше)
- * Также имеется дополнительный класс KeycloakOidcUserInfo - который возвращает роли в виде коллекции List
- * Констуктор класса KeycloakOidcUserInfo принимает любой из 3-х описанных выше параметров.
+ * Для авторизации, используйте класс AuthorizationService(), с набором методов возвращающих учётные
+ * данные пользователя, а также осуществляющие проверку наличия одной или списка ролей, частично или целиком.
+ * В классе имеется два метода возвращающих экземпляры security классов аутентификации Authentication и OidcUser.
+ * На вход контроллеров поступает экземпляр класса Principal (java.security): методы getName(), учётка как toString()
+ * Имеется дополнительный класс KeycloakOidcUserInfo - который возвращает роли в виде коллекции List
+ * KeycloakOidcUserInfo инициализируется экземплярами классов: Authentication, OAuth2AuthenticationToken, Principal.
  */
 @Controller
 public class Controller8084 {
@@ -30,7 +28,7 @@ public class Controller8084 {
     @GetMapping(path = "/")
     public String index(Principal principal, Model model)
     {
-        AuthenticationService service = new AuthenticationService();
+        AuthorizationService service = new AuthorizationService();
         // ----------------------------------------------------------------------
         // Пример чтения учётки с помощью класса AuthenticationService()
         // ----------------------------------------------------------------------
@@ -59,37 +57,37 @@ public class Controller8084 {
     }
 
     @GetMapping(path = "/customers1")
-    public String linkPage1(Principal principal, Model model)
+    public String linkPage1(Model model)
     {
-        logger.info(principal.toString());
-        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
-        model.addAttribute("username", userInfo.getUser().getFullName());
+        AuthorizationService user = new AuthorizationService();
+        logger.info(user.getAuthentication().getPrincipal().toString());
+        model.addAttribute("username", user.getFullName());
         return "customers1";
     }
 
     @GetMapping(path = "/customers2")
-    public String linkPage2(Principal principal, Model model)
+    public String linkPage2(Model model)
     {
-        logger.info(principal.toString());
-        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
-        if (userInfo.getRolesList().contains("Grant") || userInfo.getRolesList().contains("User"))
+        AuthorizationService user = new AuthorizationService();
+        logger.info(user.getAuthentication().getPrincipal().toString());
+        if (user.containsAllRoles(new String[]{"Grant","User"}))
         {   // TODO разрешенные действия для этой роли
 
-            model.addAttribute("username", userInfo.getUser().getFullName());
+            model.addAttribute("username", user.getFullName());
             return "customers2";
         }
         return "denied";
     }
 
     @GetMapping(path = "/customers3")
-    public String linkPage3(Principal principal, Model model)
+    public String linkPage3(Model model)
     {
-        logger.info(principal.toString());
-        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
-        if (userInfo.getRolesList().contains("Delete"))
+        AuthorizationService user = new AuthorizationService();
+        logger.info(user.getAuthentication().getPrincipal().toString());
+        if (user.containsRole("Delete"))
         {   // TODO разрешенные действия для этой роли
 
-            model.addAttribute("username", userInfo.getUser().getFullName());
+            model.addAttribute("username", user.getFullName());
             return "customers3";
         }
         return "denied";
