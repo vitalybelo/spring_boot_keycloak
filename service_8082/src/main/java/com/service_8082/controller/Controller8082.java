@@ -1,13 +1,9 @@
 package com.service_8082.controller;
 
-import com.auth.AuthenticationService;
-import com.auth.KeycloakOidcUserInfo;
+import com.auth.AuthorizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,13 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 /**
- * Для получения ролей и утверждений из идентификационного токена, контроллеры принимают на вход
- * совместимые (cast) классы аутентификации, которые можно использовать для чтения учётных данных
- * Principal - дает доступ к примитивному классу java.security, методы getName(), учётка как toString()
- * Authentication - класс Spring Security - возвращает principal + большой набор методов учётки пользователя
- * OAuth2AuthenticationToken - класс Spring Security Oauth2 - возвращает principal и учётку пользователя (аналог выше)
- * Также имеется дополнительный класс KeycloakOidcUserInfo - который возвращает роли в виде коллекции List
- * Констуктор класса KeycloakOidcUserInfo принимает любой из 3-х описанных выше параметров.
+ * Для авторизации, используйте класс AuthorizationService(), с набором методов возвращающих учётные
+ * данные пользователя, а также осуществляющие проверку наличия одной или списка ролей, частично или целиком.
+ * В классе имеется два метода возвращающих экземпляры security классов аутентификации Authentication и OidcUser.
+ * На вход контроллеров поступает экземпляр класса Principal (java.security): методы getName(), учётка как toString()
+ * Имеется дополнительный класс KeycloakOidcUserInfo - который возвращает роли в виде коллекции List
+ * KeycloakOidcUserInfo инициализируется экземплярами классов: Authentication, OAuth2AuthenticationToken, Principal.
  */
 @Controller
 public class Controller8082 {
@@ -31,20 +26,16 @@ public class Controller8082 {
     private static final Logger logger = LoggerFactory.getLogger(Controller8082.class);
 
     @GetMapping(path = "/")
-    public String index(Principal principal,
-                        Authentication auth1,
-                        OAuth2AuthenticationToken auth2,
-                        Model model)
+    public String index(Principal principal, Model model)
     {
-        AuthenticationService service = new AuthenticationService();
-        Authentication authentication = service.getUserAuthentication();
-        OidcUser oidcUser = service.getUserOidc();
+        AuthorizationService service = new AuthorizationService();
         // ----------------------------------------------------------------------
-        // Пример чтения ролей из principal с помощью класса KeycloakOidcUserInfo
+        // Пример чтения учётки с помощью класса AuthenticationService()
         // ----------------------------------------------------------------------
-        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(auth2);
-        model.addAttribute("username", userInfo.getUser().getFullName());
-        model.addAttribute("roles", userInfo.getRolesList());
+        model.addAttribute("username", service.getFullName());
+        model.addAttribute("phonenumber", service.getPhoneNumber());
+        model.addAttribute("position", service.getPosition());
+        model.addAttribute("roles", service.getRolesList());
         return "external";
     }
 
@@ -66,42 +57,42 @@ public class Controller8082 {
     }
 
     @GetMapping(path = "/customers1")
-    public String linkPage1(Principal principal, Model model)
+    public String linkPage1(Model model)
     {
-        logger.info(principal.toString());
-        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
-        if (userInfo.getRolesList().contains("User"))
+        AuthorizationService user = new AuthorizationService();
+        logger.info(user.getAuthentication().getPrincipal().toString());
+        if (user.containsRole("User"))
         {   // TODO разрешенные действия для этой роли
 
-            model.addAttribute("username", userInfo.getUser().getFullName());
+            model.addAttribute("username", user.getFullName());
             return "customers1";
         }
         return "denied";
     }
 
     @GetMapping(path = "/customers2")
-    public String linkPage2(Principal principal, Model model)
+    public String linkPage2(Model model)
     {
-        logger.info(principal.toString());
-        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
-        if (userInfo.getRolesList().contains("Grant"))
+        AuthorizationService user = new AuthorizationService();
+        logger.info(user.getAuthentication().getPrincipal().toString());
+        if (user.containsRole("Grant"))
         {   // TODO разрешенные действия для этой роли
 
-            model.addAttribute("username", userInfo.getUser().getFullName());
+            model.addAttribute("username", user.getFullName());
             return "customers2";
         }
         return "denied";
     }
 
     @GetMapping(path = "/customers3")
-    public String linkPage3(Principal principal, Model model)
+    public String linkPage3(Model model)
     {
-        logger.info(principal.toString());
-        KeycloakOidcUserInfo userInfo = new KeycloakOidcUserInfo(principal);
-        if (userInfo.getRolesList().contains("Admin"))
+        AuthorizationService user = new AuthorizationService();
+        logger.info(user.getAuthentication().getPrincipal().toString());
+        if (user.containsRole("Admin"))
         {   // TODO разрешенные действия для этой роли
 
-            model.addAttribute("username", userInfo.getUser().getFullName());
+            model.addAttribute("username", user.getFullName());
             return "customers3";
         }
         return "denied";

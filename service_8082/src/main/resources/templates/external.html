@@ -3,46 +3,47 @@
 <head th:include="layout :: headerFragment">
 </head>
 <body>
-	<div class="container">
-		<div class="jumbotron text-center">
-			<h1>Local Host 8082</h1>
-		</div>
-		<div>
-			<h2>Hello, <span th:text="${username}">--name--</span></h2>
-
-			<h4>Granted Authorities:
-				<tbody>
-				<tr th:each="role : ${roles}">
-					<td th:text="${role}">Text ...</td>
-				</tr>
-				</tbody>
-			</h4>
-
-			<h3>Доступные ссылки</h3>
-
-			<div class="well">
-				<b>Пройдите по ссылке: </b><a href="/customers1">доступ с ролью "User"</a>
-			</div>
-			<div class="well">
-				<b>Пройдите по ссылке: </b><a href="/customers2">доступ с ролью "Grant"</a>
-			</div>
-			<div class="well">
-				<b>Пройдите по ссылке: </b><a href="/customers3">доступ с ролью "Admin"</a>
-			</div>
-			<div class="well">
-				<b>Пройдите по ссылке: </b><a href="http://localhost:8080/">module №1 (порт 8080)</a>
-			</div>
-			<div class="well">
-				<b>Пройдите по ссылке: </b><a href="http://localhost:8084/">module №3 (порт 8084)</a>
-			</div>
-			<div class="well">
-				<b>Выход: </b><a href="/custom_logout">LOGOUT</a>
-			</div>
-
-		</div>
-		<div id="pagefoot" th:include="layout :: footerFragment">Footer
-		</div>
+<div class="container">
+	<div class="jumbotron text-center">
+		<h1>Local Host 8082</h1>
 	</div>
-	<!-- container -->
+
+	<h3>Hello, <span th:text="${username}">--name--</span></h3>
+	<h4>телефон: <span th:text="${phonenumber}">--phone--</span></h4>
+	<h4>должность: <span th:text="${position}">--position--</span></h4>
+
+	<h4>Granted Authorities:
+		<tbody>
+		<tr th:each="role : ${roles}">
+			<td th:text="${role}">Text ...</td>
+		</tr>
+		</tbody>
+	</h4>
+
+	<h3>Доступные ссылки</h3>
+
+	<div class="well">
+		<b>Пройдите по ссылке: </b><a href="/customers1">доступ с ролью "User"</a>
+	</div>
+	<div class="well">
+		<b>Пройдите по ссылке: </b><a href="/customers2">доступ с ролью "Grant"</a>
+	</div>
+	<div class="well">
+		<b>Пройдите по ссылке: </b><a href="/customers3">доступ с ролью "Admin"</a>
+	</div>
+	<div class="well">
+		<b>Пройдите по ссылке: </b><a href="http://localhost:8080/">module №1 (порт 8080)</a>
+	</div>
+	<div class="well">
+		<b>Пройдите по ссылке: </b><a href="http://localhost:8084/">module №3 (порт 8084)</a>
+	</div>
+	<div class="well">
+		<b>Выход: </b><a href="/custom_logout">LOGOUT</a>
+	</div>
+
+	<div id="pagefoot" th:include="layout :: footerFragment">Footer
+	</div>
+</div>
+<!-- container -->
 </body>
 </html>
