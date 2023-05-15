@@ -15,14 +15,24 @@ import java.util.Map;
  */
 public class AuthorizationService {
 
+    private static final String ATTRIBUTE_PHONE = "phone";
+    private static final String ATTRIBUTE_DEPARTMENT = "department";
+    private static final String ATTRIBUTE_POSITION = "position";
+    private static final String ATTRIBUTE_MIDDLE_NAME = "middle_name";
+    private static final String ATTRIBUTE_FAMILY_NAME = "family_name";
+    private static final String ATTRIBUTE_BANNER = "banner_viewed";
+    private static final String ATTRIBUTE_ADDRESS = "ip_address";
+    private static final String REALM_ACCESS = "realm_access";
+    private static final String ROLES_CLAIMS = "roles";
+    private static final String STRING_EMPTY = "";
+
     private OidcUser user;
     private final List<String> rolesList = new ArrayList<>();
-    private static final String RETURN_UNIT = null;
 
     /**
      * Конструктор считывает oauth2 учётку пользователя из контекста security в экземпляр класса OidcUser.
      * После этой инициализации, в конструкторе вызывается метод, который считывает список ролей из утверждений (claims)
-     * id токена. Получить список - вызов метода getRolesList()
+     * id токена. Получить список можно вызовом метода getRolesList()
      */
     public AuthorizationService() {
         this.user = (OidcUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -31,7 +41,7 @@ public class AuthorizationService {
 
     /**
      * Возвращает информацию о пользователе: id токен, утверждения, стандартную учётку, кастомные аттрибуты.
-     * @return - экземпляр класса аутентификации Authentication
+     * @return экземпляр класса аутентификации Authentication
      */
     public Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
@@ -39,7 +49,7 @@ public class AuthorizationService {
 
     /**
      * Возвращает информацию о пользователе: id токен, утверждения, стандартную учётку, кастомные аттрибуты.
-     * @return - экземпляр класса аутентификации Oauth2 Open Id Connect :: OidcUser с обширным набором методов
+     * @return экземпляр класса аутентификации Oauth2 Open Id Connect :: OidcUser с обширным набором методов
      */
     public OidcUser getOidcUser() {
         return user;
@@ -47,18 +57,50 @@ public class AuthorizationService {
 
     /**
      * Возвращает имя пользователя = логин (login name)
-     * @return - строка регистрационного имени пользователя
+     * @return строка регистрационного имени пользователя
      */
     public String getUserName() {
-        return user.getPreferredUsername();
+        if (user.getPreferredUsername() != null) {
+            return user.getPreferredUsername();
+        }
+        return STRING_EMPTY;
+    }
+
+    /**
+     * Возвращает фамилию пользователя из утверждений id токена
+     * @return строка с фамилией пользователя
+     */
+    public String getFamilyName() {
+        if (user.containsClaim(ATTRIBUTE_FAMILY_NAME)) {
+            String familyName = user.getClaimAsString(ATTRIBUTE_FAMILY_NAME);
+            if (familyName != null) return familyName;
+        }
+        return STRING_EMPTY;
+    }
+
+    /**
+     * Метод извлекает кастомный аттрибут пользователя из списка утверждений id токена
+     * Возвращает параметр "отчество" из учётки, если он задан как аттрибут пользователя
+     * @return строковая переменная с "отчеством" пользователя, или null если не задана
+     */
+    public String getMiddleName() {
+        if (user.containsClaim(ATTRIBUTE_MIDDLE_NAME)) {
+            String middleName = user.getClaimAsString(ATTRIBUTE_MIDDLE_NAME);
+            if (middleName != null) return middleName;
+        }
+        return STRING_EMPTY;
     }
 
     /**
      * Возвращает полное имя пользователя из профиля учётки keycloak = first name + second name
-     * @return - строка полного имени пользователя
+     * @return строка полного имени пользователя
      */
     public String getFullName() {
-        return user.getFullName();
+        String givenName = user.getGivenName();
+        if (givenName != null) {
+            return givenName + " " + getMiddleName() + " " + getFamilyName();
+        }
+        return getUserName();
     }
 
     /**
@@ -66,7 +108,7 @@ public class AuthorizationService {
      * экземпляра класса AuthenticationService, далее не обновляется. Дополнительное обновления списка
      * не требуется, так он единственный для пользователя. В случае необходимости, используйте метод обновления
      * списка refreshOidcUser(), при котором из контекста security обновляется principal пользователя
-     * @return - List коллекция - список ролей, или пустой
+     * @return List коллекция - список ролей, или пустой
      */
     public List<String> getRolesList() {
         return rolesList;
@@ -74,51 +116,70 @@ public class AuthorizationService {
 
     /**
      * Возвращает электронную почту пользователя из учётки если она есть, или null
-     * @return - строковая переменная с почтой пользователя, или null если не задана
+     * @return строковая переменная с почтой пользователя, или null если не задана
      */
     public String getUserEmail() {
-        return user.getEmail();
+        if (user.getEmail() != null) {
+            return user.getEmail();
+        }
+        return STRING_EMPTY;
     }
 
     /**
      * Метод извлекает кастомный аттрибут пользователя из списка утверждений id токена
      * Возвращает номер телефона из учётки, если он задан как аттрибут пользователя
-     * @return - строковая переменная с номером телефона, или null если не задана
+     * @return строковая переменная с номером телефона, или null если не задана
      */
     public String getPhoneNumber() {
-        return (user.containsClaim("phone") ? user.getClaimAsString("phone") : RETURN_UNIT);
+        if (user.containsClaim(ATTRIBUTE_PHONE)) {
+            String phoneNumber = user.getClaimAsString(ATTRIBUTE_PHONE);
+            if (phoneNumber != null) return phoneNumber;
+        }
+        return STRING_EMPTY;
     }
 
     /**
      * Метод извлекает кастомный аттрибут пользователя из списка утверждений id токена
      * Возвращает название подразделения из учётки если оно задано как аттрибут пользователя
-     * @return - строковая переменная подразделения, или null если не задана
+     * @return строковая переменная подразделения, или null если не задана
      */
     public String getDepartment() {
-        return (user.containsClaim("department") ? user.getClaimAsString("department") : RETURN_UNIT);
+        if (user.containsClaim(ATTRIBUTE_DEPARTMENT)) {
+            String department = user.getClaimAsString(ATTRIBUTE_DEPARTMENT);
+            if (department != null) return department;
+        }
+        return STRING_EMPTY;
     }
 
     /**
      * Метод извлекает кастомный аттрибут пользователя из списка утверждений id токена
      * Возвращает название должности из учётки если оно заданно как аттрибут пользователя
-     * @return - строковая переменная должности, или null если не задана
+     * @return строковая переменная должности, или null если не задана
      */
     public String getPosition() {
-        return (user.containsClaim("position") ? user.getClaimAsString("position") : RETURN_UNIT);
+        if (user.containsClaim(ATTRIBUTE_POSITION)) {
+            String position = user.getClaimAsString(ATTRIBUTE_POSITION);
+            if (position != null) return position;
+        }
+        return STRING_EMPTY;
     }
 
     /**
      * Метод извлекает кастомный аттрибут пользователя из списка утверждений id токена
      * Возвращает признак - что баннер безопасности уже показывался пользователю при входе,
      * параметр должен быть задан как аттрибут пользователя в настройках keycloak
-     * @return - true или false, или null если аттрибут не задан для пользователя
+     * @return true или false, или null если аттрибут не задан для пользователя
      */
     public Boolean isSecurityBannerViewed() {
-        return (user.containsClaim("ban_viewed") ? user.getClaimAsBoolean("ban_viewed") : null);
+        return (user.containsClaim(ATTRIBUTE_BANNER) ? user.getClaimAsBoolean(ATTRIBUTE_BANNER) : null);
     }
 
     public String getIpAddress() {
-        return (user.containsClaim("ip_address") ? user.getClaimAsString("ip_address") : RETURN_UNIT);
+        if (user.containsClaim(ATTRIBUTE_ADDRESS)) {
+            String ipAddress = user.getClaimAsString(ATTRIBUTE_ADDRESS);
+            if (ipAddress != null) return  ipAddress;
+        }
+        return STRING_EMPTY;
     }
 
     /**
@@ -134,12 +195,12 @@ public class AuthorizationService {
     /**
      * Проверяет в учётке пользователя наличие запрашиваемой роли.
      * @param role строковое значение роли, которое проверяется на наличие в учетных данных пользователя
-     * @return true - если роль присвоена этому пользователю, false - такой роли у пользователя нет
+     * @return true если роль присвоена этому пользователю, false если такой роли у пользователя нет
      */
     public boolean containsRole(CharSequence role)
     {
-        if (user.containsClaim("realm_access")) {
-            String roles = user.getClaimAsString("realm_access");
+        if (user.containsClaim(REALM_ACCESS)) {
+            String roles = user.getClaimAsString(REALM_ACCESS);
             return roles.contains(role);
         }
         return false;
@@ -148,11 +209,11 @@ public class AuthorizationService {
     /**
      * Проверяет в учётке пользователя наличие хотя-бы одной роли из запрашиваемого списка ролей
      * @param roles строковый массив содержащий список запрашиваемых у метода ролей на проверку
-     * @return true - если найдена хотя бы одна роль из списка, false - ни одна роль не найдена
+     * @return true если найдена хотя бы одна роль из списка, false если ни одна роль не найдена
      */
     public boolean containsRoles(String[] roles) {
-        if (user.containsClaim("realm_access")) {
-            String roleString = user.getClaimAsString("realm_access");
+        if (user.containsClaim(REALM_ACCESS)) {
+            String roleString = user.getClaimAsString(REALM_ACCESS);
             for (String role : roles) {
                 if (roleString.contains(role)) return true;
             }
@@ -163,11 +224,11 @@ public class AuthorizationService {
     /**
      * Проверяет в учётке пользователя наличие всех запрашиваемых в списке параметров ролей
      * @param roles строковый массив, содержащий список запрашиваемых у метода ролей на проверку
-     * @return true - только если найдены все роли из запрашиваемого списка, false - если хотя бы одна роль не найдена
+     * @return true только если найдены все роли из запрашиваемого списка, false если хотя бы одна роль не найдена
      */
     public boolean containsAllRoles(String[] roles) {
-        if (user.containsClaim("realm_access")) {
-            String roleString = user.getClaimAsString("realm_access");
+        if (user.containsClaim(REALM_ACCESS)) {
+            String roleString = user.getClaimAsString(REALM_ACCESS);
             for (String role : roles) {
                 if (!roleString.contains(role)) return false;
             }
@@ -183,12 +244,12 @@ public class AuthorizationService {
     private void extractRolesList()
     {
         rolesList.clear();
-        if (user.containsClaim("realm_access")) {
-            Map<String, Object> rolesClaimMap = new HashMap<>(user.getClaimAsMap("realm_access"));
+        if (user.containsClaim(REALM_ACCESS)) {
+            Map<String, Object> rolesClaimMap = new HashMap<>(user.getClaimAsMap(REALM_ACCESS));
             JSONArray jsonArray = new JSONArray();
-            if (rolesClaimMap.containsKey("roles")) {
-                if (rolesClaimMap.get("roles") instanceof List) {
-                    jsonArray.addAll((List) rolesClaimMap.get("roles"));
+            if (rolesClaimMap.containsKey(ROLES_CLAIMS)) {
+                if (rolesClaimMap.get(ROLES_CLAIMS) instanceof List) {
+                    jsonArray.addAll((List) rolesClaimMap.get(ROLES_CLAIMS));
                     for (Object o : jsonArray)
                         rolesList.add(o.toString());
                 }
