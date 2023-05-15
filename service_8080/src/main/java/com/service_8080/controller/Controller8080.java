@@ -63,7 +63,6 @@ public class Controller8080 {
         logger.info(user.getAuthentication().getPrincipal().toString());
         if (user.containsRoles(new String[]{"Роль 1", "Роль 2"}))
         {   // TODO разрешенные действия для этой роли
-
             model.addAttribute("username", user.getFullName());
             return "customers1";
         }
@@ -77,7 +76,6 @@ public class Controller8080 {
         logger.info(user.getAuthentication().getPrincipal().toString());
         if (user.containsRole("Admin"))
         {   // TODO разрешенные действия для этой роли
-
             model.addAttribute("username", user.getFullName());
             return "customers2";
         }
@@ -91,7 +89,6 @@ public class Controller8080 {
         logger.info(user.getAuthentication().getPrincipal().toString());
         if (user.containsRole("Boss"))
         {   // TODO разрешенные действия для этой роли
-
             model.addAttribute("username", user.getFullName());
             return "customers3";
         }
