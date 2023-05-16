@@ -24,7 +24,7 @@ public class AuthorizationService {
     private static final String ATTRIBUTE_ADDRESS = "ip_address";
     private static final String REALM_ACCESS = "realm_access";
     private static final String ROLES_CLAIMS = "roles";
-    private static final String STRING_EMPTY = "";
+    private static final String STRING_EMPTY = ""; // =null
 
     private OidcUser user;
     private final List<String> rolesList = new ArrayList<>();
@@ -57,7 +57,7 @@ public class AuthorizationService {
 
     /**
      * Возвращает имя пользователя = логин (login name)
-     * @return строка регистрационного имени пользователя
+     * @return строка регистрационного имени пользователя, или пустая строка если поле не было задано
      */
     public String getUserName() {
         if (user.getPreferredUsername() != null) {
@@ -68,7 +68,7 @@ public class AuthorizationService {
 
     /**
      * Возвращает фамилию пользователя из утверждений id токена
-     * @return строка с фамилией пользователя
+     * @return строка с фамилией пользователя, или пустая строка если поле не было задано
      */
     public String getFamilyName() {
         if (user.containsClaim(ATTRIBUTE_FAMILY_NAME)) {
@@ -81,7 +81,7 @@ public class AuthorizationService {
     /**
      * Метод извлекает кастомный аттрибут пользователя из списка утверждений id токена
      * Возвращает параметр "отчество" из учётки, если он задан как аттрибут пользователя
-     * @return строковая переменная с "отчеством" пользователя, или null если не задана
+     * @return строковая переменная с "отчеством" пользователя, или пустая строка если поле не было задано
      */
     public String getMiddleName() {
         if (user.containsClaim(ATTRIBUTE_MIDDLE_NAME)) {
@@ -93,7 +93,7 @@ public class AuthorizationService {
 
     /**
      * Возвращает полное имя пользователя из профиля учётки keycloak = first name + second name
-     * @return строка полного имени пользователя
+     * @return строка полного имени пользователя, или username строка в случае если первое имя = null
      */
     public String getFullName() {
         String givenName = user.getGivenName();
@@ -108,7 +108,7 @@ public class AuthorizationService {
      * экземпляра класса AuthenticationService, далее не обновляется. Дополнительное обновления списка
      * не требуется, так он единственный для пользователя. В случае необходимости, используйте метод обновления
      * списка refreshOidcUser(), при котором из контекста security обновляется principal пользователя
-     * @return List коллекция - список ролей, или пустой
+     * @return List коллекция - список ролей, или пустой список если пользователю не назначены роли
      */
     public List<String> getRolesList() {
         return rolesList;
@@ -116,7 +116,7 @@ public class AuthorizationService {
 
     /**
      * Возвращает электронную почту пользователя из учётки если она есть, или null
-     * @return строковая переменная с почтой пользователя, или null если не задана
+     * @return строковая переменная с почтой пользователя, или пустая строка если поле не было задано
      */
     public String getUserEmail() {
         if (user.getEmail() != null) {
@@ -128,7 +128,7 @@ public class AuthorizationService {
     /**
      * Метод извлекает кастомный аттрибут пользователя из списка утверждений id токена
      * Возвращает номер телефона из учётки, если он задан как аттрибут пользователя
-     * @return строковая переменная с номером телефона, или null если не задана
+     * @return строковая переменная с номером телефона, или пустая строка если поле не было задано
      */
     public String getPhoneNumber() {
         if (user.containsClaim(ATTRIBUTE_PHONE)) {
@@ -141,7 +141,7 @@ public class AuthorizationService {
     /**
      * Метод извлекает кастомный аттрибут пользователя из списка утверждений id токена
      * Возвращает название подразделения из учётки если оно задано как аттрибут пользователя
-     * @return строковая переменная подразделения, или null если не задана
+     * @return строковая переменная подразделения, или пустая строка если поле не было задано
      */
     public String getDepartment() {
         if (user.containsClaim(ATTRIBUTE_DEPARTMENT)) {
@@ -154,7 +154,7 @@ public class AuthorizationService {
     /**
      * Метод извлекает кастомный аттрибут пользователя из списка утверждений id токена
      * Возвращает название должности из учётки если оно заданно как аттрибут пользователя
-     * @return строковая переменная должности, или null если не задана
+     * @return строковая переменная должности, или пустая строка если поле не было задано
      */
     public String getPosition() {
         if (user.containsClaim(ATTRIBUTE_POSITION)) {
@@ -174,6 +174,10 @@ public class AuthorizationService {
         return (user.containsClaim(ATTRIBUTE_BANNER) ? user.getClaimAsBoolean(ATTRIBUTE_BANNER) : null);
     }
 
+    /**
+     * Возвращает IP адрес, заданный для пользователя статически в учётной записи
+     * @return строка с ip адресом, или пустая строка если поле не было задано
+     */
     public String getIpAddress() {
         if (user.containsClaim(ATTRIBUTE_ADDRESS)) {
             String ipAddress = user.getClaimAsString(ATTRIBUTE_ADDRESS);
