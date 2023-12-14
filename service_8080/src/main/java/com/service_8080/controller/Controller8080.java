@@ -1,6 +1,6 @@
 package com.service_8080.controller;
 
-import com.auth.AuthorizationService;
+import com.service_8080.auth.AuthorizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

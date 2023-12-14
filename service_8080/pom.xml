@@ -62,46 +62,7 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-
-        <dependency>
-            <groupId>com</groupId>
-            <artifactId>common</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-
-        <!--        <dependency>-->
-        <!--			<groupId>org.keycloak</groupId>-->
-        <!--			<artifactId>keycloak-spring-security-adapter</artifactId>-->
-        <!--			<version>${keycloak.version}</version>-->
-        <!--		</dependency>-->
-
-        <!--		<dependency>-->
-        <!--			<groupId>org.keycloak</groupId>-->
-        <!--			<artifactId>keycloak-spring-boot-starter</artifactId>-->
-        <!--			<version>${keycloak.version}</version>-->
-        <!--		</dependency>-->
-
-        <!-- https://mvnrepository.com/artifact/net.minidev/json-smart -->
-        <!--        <dependency>-->
-        <!--            <groupId>net.minidev</groupId>-->
-        <!--            <artifactId>json-smart</artifactId>-->
-        <!--            <version>2.4.9</version>-->
-        <!--        </dependency>-->
-
     </dependencies>
-
-        <!-- Не обязательные зависимости -->
-    <!--	<dependencyManagement>-->
-    <!--		<dependencies>-->
-    <!--			<dependency>-->
-    <!--				<groupId>org.keycloak.bom</groupId>-->
-    <!--				<artifactId>keycloak-adapter-bom</artifactId>-->
-    <!--		    	<version>${keycloak.version}</version>-->
-    <!--				<type>pom</type>-->
-    <!--				<scope>import</scope>-->
-    <!--			</dependency>-->
-    <!--		</dependencies>-->
-    <!--	</dependencyManagement>-->
 
     <build>
         <plugins>
